@@ -1,9 +1,8 @@
-import {
-  getData
-} from './helpers.js'
+import { getData } from './helpers.js'
+import { gitHubUrl } from './_data.js'
 
 export function getInitialData () {
-  return getData()
+  return getData(gitHubUrl)
   .then((repos) => ({
     repos
   }))
