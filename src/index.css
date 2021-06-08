@@ -12,7 +12,24 @@ code {
     monospace;
 }
 
+.table{
+  border: 3px solid blueviolet;
+  width: 100%;
+}
+
 .avatar {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
+}
+
+.num_box {
+  float: left;
+  border: 2px #000 solid;
+  padding: 1px 10px 1px 10px;
+  margin-right: 10px;
+}
+
+.td-content{
+  float: left;
+  width: 100%;
 }
