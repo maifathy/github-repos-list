@@ -9,14 +9,24 @@ class ReposList extends Component {
     page: 0,
     items: []
   }
+
+  getDocHeight = () => {
+    var D = document;
+    return Math.max(
+        D.body.scrollHeight, D.documentElement.scrollHeight,
+        D.body.offsetHeight, D.documentElement.offsetHeight,
+        D.body.clientHeight, D.documentElement.clientHeight
+    )
+  }
+
   onScroll = () => {
-      if (window.innerHeight <= window.scrollY &&       this.props.repos.incomplete_results){
-        this.props.dispatch(handleInitialData(this.state.page + 1))
+      if (window.scrollY + window.innerHeight == this.getDocHeight() && this.props.repos.incomplete_results && this.state.items.length <= 970){
+        this.props.dispatch(handleInitialData(parseInt(this.state.page) + 1))
         this.setState((prevState) => ({
           page: prevState.page + 1
         }))
         this.setState((prevState) => ({
-          items: [...prevState.items, this.props.repos.items]
+          items: [...prevState.items, ...this.props.repos.items]
         }))
       }
 
@@ -41,7 +51,7 @@ class ReposList extends Component {
     console.log('state' + this.state.items)
     const { items } = this.state
     return(
-      <div>
+      <div id='divItems'>
         <LoadingBar />
         {this.props.loading === true ?
           <div> Waiting to load data </div>
@@ -55,7 +65,8 @@ class ReposList extends Component {
                       <td style={{width: 100 + 'px'}}>
                         <img
                           alt='avatar'
-                          src={items[repoId].owner.avatar_url}
+                          src={items[repoId].owner !== undefined ?
+                            items[repoId].owner.avatar_url : ''}
                           className='avatar'
                         />
                       </td>
@@ -74,7 +85,8 @@ class ReposList extends Component {
                           {`${items[repoId].open_issues_count} Issues`}
                         </div>
                         <div>
-                          {`Submitted ${getDays(items[repoId].created_at)} days ago by ${items[repoId].owner.login}`}
+                          {`Submitted ${getDays(items[repoId].created_at)} days ago`} {items[repoId].owner !== undefined ?
+                            `by ${items[repoId].owner.login}` : ''}
                         </div>
                         </div>
                       </td>
