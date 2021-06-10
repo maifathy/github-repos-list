@@ -1,6 +1,13 @@
 # Trending Repos Web Page
 
-A simple web page to display trending repos in github
+A simple web page to display trending repos in github using React
+** Data are limited to the last created in the last 30 days.
+** Pagination is tested for getting the top 1000 records as the documentation of gitHub library offers.
+** Used libraries:
+  -- react-redux
+  -- react-redux-loading
+  -- redux-thunk
+  -- redux
 
 ## Available Scripts
 
