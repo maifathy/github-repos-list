@@ -20,16 +20,25 @@ class ReposList extends Component {
   }
 
   onScroll = () => {
-      if (window.scrollY + window.innerHeight == this.getDocHeight() && this.props.repos.incomplete_results && this.state.items.length <= 970){
+      if (window.scrollY + window.innerHeight === this.getDocHeight() && this.props.repos.incomplete_results && this.state.items.length <= 970){
         this.props.dispatch(handleInitialData(parseInt(this.state.page) + 1))
-        this.setState((prevState) => ({
-          page: prevState.page + 1
-        }))
-        this.setState((prevState) => ({
-          items: [...prevState.items, ...this.props.repos.items]
-        }))
+        .then(() => {
+          console.log('this.state.page:', parseInt(this.state.page) + 1)
+          var repeated = this.state.items.filter(e => this.props.repos.items.indexOf(e) !== -1).length === this.props.repos.items.length
+          console.log('repeated: ', repeated)
+          if(!repeated){
+            this.setState((prevState) => ({
+              page: prevState.page + 1
+            }))
+            this.setState((prevState) => ({
+              items: [...prevState.items, ...this.props.repos.items]
+            }))
+          }
+          else{
+            setTimeout(this.onScroll(), 10000)
+          }
+        })
       }
-
   }
 
   componentDidMount(){
@@ -47,8 +56,6 @@ class ReposList extends Component {
   }
 
   render(){
-    console.log(this.props.repos)
-    console.log('state' + this.state.items)
     const { items } = this.state
     return(
       <div id='divItems'>
@@ -61,7 +68,7 @@ class ReposList extends Component {
               <li key={repoId}>
                 <table className='table'>
                   <tbody>
-                    <tr>
+                    <tr style={{display: 'flex'}}>
                       <td style={{width: 100 + 'px'}}>
                         <img
                           alt='avatar'
